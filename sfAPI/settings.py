@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -77,8 +78,18 @@ WSGI_APPLICATION = "sfAPI.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        # "ENGINE": "django.db.backends.sqlite3",
+        # "NAME": BASE_DIR / "db.sqlite3",
+        # "ENGINE": os.environ.get("SFAPI_DATABASE_ENGINE", "django.contrib.gis.db.backends.postgis"),
+        "ENGINE": os.environ.get("SFAPI_DATABASE_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.environ.get("SFAPI_DATABASE_NAME", "sfapi"),
+        "USER": os.environ.get("SFAPI_DATABASE_USER", "postgres"),
+        "PASSWORD": os.environ.get("SFAPI_DATABASE_PASSWORD", "password"),
+        "HOST": os.environ.get("SFAPI_DATABASE_HOST", "127.0.0.1"),
+        "PORT": os.environ.get("SFAPI_DATABASE_PORT", "5432"),
+        "OPTIONS": {
+            "client_encoding": "UTF8",
+        },
     }
 }
 
